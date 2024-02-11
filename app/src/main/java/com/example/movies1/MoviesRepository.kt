@@ -1,10 +1,12 @@
 package com.example.movies1
 
+import android.util.Log
 import com.example.movies1.network.Movie
+import com.example.movies1.network.MoviesService
 
 class MoviesRepository {
 
-    fun getMovies(): List<Movie> {
+    fun getDummyMovies(): List<Movie> {
         val dummyMovies = listOf(
             Movie(
                 adult = false,
@@ -43,4 +45,18 @@ class MoviesRepository {
         return dummyMovies + dummyMovies + dummyMovies + dummyMovies + dummyMovies
     }
 
+    suspend fun getMovies(): List<Movie> {
+        val response = try {
+            MoviesService.api.getMovies()
+        } catch (e: Exception) {
+            Log.e(TAG,"Exception with message ${e.message}")
+            return emptyList()
+        }
+
+        if (response.isSuccessful && response.body() != null) {
+            return response.body()!!.movies
+        }
+
+        return emptyList()
+    }
 }

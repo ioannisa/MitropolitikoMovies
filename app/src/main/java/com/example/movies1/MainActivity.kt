@@ -30,8 +30,12 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import coil.compose.rememberAsyncImagePainter
 import com.example.movies1.network.Movie
+import com.example.movies1.network.NetworkUtils
 import com.example.movies1.ui.theme.Movies1Theme
+
+const val TAG = "Movies1"
 
 class MainActivity : ComponentActivity() {
 
@@ -113,15 +117,13 @@ fun RowItem(movie: Movie, modifier: Modifier = Modifier) {
 fun ThumbnailLoader(imagePath: String?) {
     val imagePainter: Painter
 
-//    if (!imagePath.isNullOrEmpty()) {
-//        val imageUrl = NetworkUtils.getImageUrl(imagePath, NetworkUtils.ImageSize.SMALL)
-//        imagePainter = rememberAsyncImagePainter(imageUrl)
-//    }
-//    else {
-//        imagePainter = painterResource(R.drawable.ic_launcher_foreground)
-//    }
-
-    imagePainter = painterResource(R.drawable.android)
+    if (!imagePath.isNullOrEmpty()) {
+        val imageUrl = NetworkUtils.getImageUrl(imagePath, NetworkUtils.ImageSize.SMALL)
+        imagePainter = rememberAsyncImagePainter(imageUrl)
+    }
+    else {
+        imagePainter = painterResource(R.drawable.ic_launcher_foreground)
+    }
 
     Image(
         painter = imagePainter,

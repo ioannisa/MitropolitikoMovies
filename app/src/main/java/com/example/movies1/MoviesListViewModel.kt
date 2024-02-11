@@ -1,9 +1,11 @@
 package com.example.movies1
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.movies1.network.Movie
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.launch
 
 class MoviesListViewModel: ViewModel() {
 
@@ -16,7 +18,13 @@ class MoviesListViewModel: ViewModel() {
         loadMovies()
     }
 
+    private fun loadDummyMovies() {
+        _movies.value = repository.getDummyMovies()
+    }
+
     private fun loadMovies() {
-        _movies.value = repository.getMovies()
+        viewModelScope.launch {
+            _movies.value = repository.getMovies()
+        }
     }
 }
