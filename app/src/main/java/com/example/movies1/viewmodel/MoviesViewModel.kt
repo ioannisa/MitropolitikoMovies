@@ -15,17 +15,24 @@ class MoviesViewModel: ViewModel() {
 
     private val repository = MoviesRepository()
 
+    private val _selectedMovie = MutableStateFlow<Movie?>(null)
+    val selectedMovie: StateFlow<Movie?> = _selectedMovie
+
     init {
         loadMovies()
-    }
-
-    private fun loadDummyMovies() {
-        _movies.value = repository.getDummyMovies()
     }
 
     private fun loadMovies() {
         viewModelScope.launch {
             _movies.value = repository.getMovies()
         }
+    }
+
+    fun selectMovie(movieId: Int) {
+        _selectedMovie.value = getMovieById(movieId)
+    }
+
+    private fun getMovieById(movieId: Int): Movie? {
+        return _movies.value.firstOrNull { it.id == movieId }
     }
 }
