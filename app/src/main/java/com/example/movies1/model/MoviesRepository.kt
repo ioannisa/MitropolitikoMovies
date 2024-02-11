@@ -1,6 +1,7 @@
-package com.example.movies1
+package com.example.movies1.model
 
 import android.util.Log
+import com.example.movies1.TAG
 import com.example.movies1.network.Movie
 import com.example.movies1.network.MoviesService
 
